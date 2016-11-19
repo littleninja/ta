@@ -1,0 +1,1 @@
+curl -s -k -H "Content-Type: application/json" -H "Authorization: Bearer @YOUR-ACCESS-TOKEN" https://language.googleapis.com/v1/documents:analyzeEntities -d @../entity.json > result.json
