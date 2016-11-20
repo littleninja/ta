@@ -7,6 +7,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>-->
     <style>
         body {
+            font-size: 24px;
             background-repeat: no-repeat;
             background-image: url(blackboard.png);
             background-size: 75%;
@@ -23,6 +24,7 @@
             border-left: 4px solid #5B9BD5;
         }
         .chat-history {
+            overflow-y: scroll;
         }
         .chat-wrap {
             display: flex;
@@ -47,10 +49,8 @@
             margin: 8px 12px;
         }
         .chat-title {
+            font-size: 18px;
             border-bottom: 1px solid #5B9BD5;
-        }
-        .chat-history {
-
         }
         .chat-message {
             width: 70%;
@@ -86,6 +86,9 @@
 </div>
 
 <script>
+
+    var strikes = 1;
+
     function addComment(msg, whoClass) {
         document.getElementById('chat-history').insertAdjacentHTML('beforeend', '<div class="chat-message '+ whoClass +'">' + msg + '</div>');
     }
@@ -101,7 +104,7 @@
     }
 
     function addBotComment(msg) {
-        setTimeout(function () {addComment(msg, 'bot');}, Math.floor(msg.length * 100));
+        setTimeout(function () {addComment(msg, 'bot');}, Math.floor(msg.length * 42));
     }
 
     function askBot(query) {
@@ -136,6 +139,9 @@
             else if (/time/.test(query) && /due/.test(query)) {
                 content = 'Your presentation is due today... four minutes ago. &#x1f62c;';
             }
+            else if (/up/.test(query)) {
+                content = 'Not much. Did you have a question?';
+            }
         }
         else if (/when/.test(query)) {
             if (/due/.test(query)) {
@@ -145,6 +151,12 @@
 
         if (!content) {
             content = 'Hmm. Can you clarify?';
+            strikes++;
+        }
+
+        if (strikes > 2) {
+            content = 'I don\'t have that answer, but I\'ll send an email to the teacher and connect you two.';
+            strikes = 0;
         }
 
         if (content) {
