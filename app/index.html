@@ -101,7 +101,7 @@
     }
 
     function addBotComment(msg) {
-        setTimeout(function () {addComment(msg, 'bot');}, Math.floor(Math.random() * 1e4));
+        setTimeout(function () {addComment(msg, 'bot');}, Math.floor(msg.length * 100));
     }
 
     function askBot(query) {
@@ -109,6 +109,42 @@
         var content = '';
         if (/^hi|hello|hey$/.test(query)) {
             content = 'Hey, what\'s up?';
+        }
+        else if (/^bye|goodbye|good-bye|see you later$/.test(query)) {
+            content = 'Good luck, \'bye!';
+        }
+        else if (/who/.test(query)){
+            if (/teacher/.test(query)) {
+                content = 'Mr. Slatts and Ms. Tu are teaching this course.';
+            }
+        }
+        else if (/what/.test(query)) {
+            if (/theme|topic|about/.test(query) && /course/.test(query)) {
+                content = 'This is a course about physical science.';
+            }
+            else if (/meaning/.test(query) && /life/.test(query)) {
+                content = '42. Good question, you should consider founding a start-up.';
+            }
+            else if (/course/.test(query) && /materials/.test(query)) {
+                content = 'The course website can be found at  UPrep: http://universityprep.schoology.com.' +
+                'We have a science notebook, this is a lab book that will be handed out during the first week of class.' +
+                'It\'s also essential that you keep a well-organized binder or folder for all the materials and assignments. Pockets and dividers are good.';
+            }
+            else if (/book/.test(query)) {
+                content = 'We\'re using Science Reading Book: A Short History of Nearly Everything by Bill Bryson, but we have copies in class so no need to purchase a copy.';
+            }
+            else if (/time/.test(query) && /due/.test(query)) {
+                content = 'Your presentation is due today... four minutes ago. &#x1f62c;';
+            }
+        }
+        else if (/when/.test(query)) {
+            if (/due/.test(query)) {
+                content = 'Your presentation is due today... four minutes ago. &#x1f62c;';
+            }
+        }
+
+        if (!content) {
+            content = 'Hmm. Can you clarify?';
         }
 
         if (content) {
