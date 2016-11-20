@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina" rel="stylesheet">
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>-->
     <style>
         body {
             background-repeat: no-repeat;
@@ -10,30 +12,28 @@
             background-size: 75%;
         }
         .chat {
+            display: flex;
+            flex-direction: column;
             position: absolute;
             top: 0;
             right: 0;
             width: 360px;
             height: 100%;
             background-color: white;
-            border-left: 4px solid gray;
+            border-left: 4px solid #5B9BD5;
+        }
+        .chat-history {
         }
         .chat-wrap {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: absolute;
-            bottom: 0;
             width: 100%;
             height: 60px;
-            background-color: green;
-        }
-        .chat-avatar {
-            width: 56px;
-            margin: 8px 12px;
+            background-color: #5B9BD5;
         }
         .chat-input {
-            width: 240px;
+            width: 280px;
             margin: 8px 16px 8px 0;
         }
         .chat-header {
@@ -42,8 +42,30 @@
             height: 70px;
             font-family: 'Baloo Bhaina', cursive;
         }
+        .chat-avatar {
+            width: 56px;
+            margin: 8px 12px;
+        }
         .chat-title {
             border-bottom: 1px solid #5B9BD5;
+        }
+        .chat-history {
+
+        }
+        .chat-message {
+            width: 70%;
+            border-radius: 4px;
+            border: 1px solid #5B9BD5;
+            padding: 4px;
+            margin: 4px;
+        }
+        .chat-message.student {
+            float: left;
+            background-color: aliceblue;
+        }
+        .chat-message.bot {
+            float: right;
+            background-color: white;
         }
     </style>
     <title>Whiteboard</title>
@@ -57,10 +79,44 @@
         <hr>
     </div>
     <div class="chat-wrap">
-        <input class="chat-input" type="text" />
-        <button class="chat-button">+</button>
+        <input id="chat-input" class="chat-input" type="text" />
+        <button class="chat-button" onclick="addStudentComment()">+</button>
     </div>
+    <div id="chat-history" class="chat-history"></div>
 </div>
+
+<script>
+    function addComment(msg, whoClass) {
+        document.getElementById('chat-history').insertAdjacentHTML('beforeend', '<div class="chat-message '+ whoClass +'">' + msg + '</div>');
+    }
+
+    function addStudentComment() {
+
+        var input = document.getElementById('chat-input');
+        var msg = input.value;
+
+        input.value = '';
+        addComment(msg, 'student');
+        askBot(msg.toLowerCase());
+    }
+
+    function addBotComment(msg) {
+        setTimeout(function () {addComment(msg, 'bot');}, Math.floor(Math.random() * 1e4));
+    }
+
+    function askBot(query) {
+
+        var content = '';
+        if (/^hi|hello|hey$/.test(query)) {
+            content = 'Hey, what\'s up?';
+        }
+
+        if (content) {
+            addBotComment(content);
+        }
+    }
+
+</script>
 
 </body>
 </html>
